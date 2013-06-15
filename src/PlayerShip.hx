@@ -1,4 +1,5 @@
-import org.flixel.*;
+import org.flixel.FlxSprite;
+import org.flixel.FlxG;
 
 class PlayerShip extends FlxSprite {
 
@@ -26,9 +27,13 @@ class PlayerShip extends FlxSprite {
 		if(x < 4) x = 4;
 		if(FlxG.keys.justPressed("SPACE"))  {
 			//Space bar was pressed!  FIRE A BULLET
-			var bullet : FlxSprite = try cast((try cast(FlxG.state, PlayState) catch(e) null).playerBullets.recycle(), FlxSprite) catch(e) null;
-			bullet.reset(x + width / 2 - bullet.width / 2, y);
-			bullet.velocity.y = -140;
+			var playState:PlayState = cast(FlxG.state, PlayState);
+			if(playState != null){
+				var bullet : FlxSprite = cast(playState, FlxSprite);
+				//try cast((try cast(FlxG.state, PlayState) catch(e) null).playerBullets.recycle(), FlxSprite) catch(e) null;
+				bullet.reset(x + width / 2 - bullet.width / 2, y);
+				bullet.velocity.y = -140;
+			}
 		}
 	}
 

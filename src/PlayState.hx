@@ -1,5 +1,10 @@
+import org.flixel.FlxGroup;
+import org.flixel.FlxObject;
+import org.flixel.FlxSprite;
+import org.flixel.FlxState;
+import org.flixel.FlxG;
+import org.flixel.FlxText;
 //Get access to all the wonders flixel has to offer
-import org.flixel.*;
 
 class PlayState extends FlxState {
 
@@ -25,7 +30,7 @@ class PlayState extends FlxState {
 		//We're using the global scores array to store a basic, state-independent status string.
 		//If there is no status string (the scores array is empty) then make a new welcome message.
 		if(FlxG.scores.length <= 0) FlxG.scores[0] = "WELCOME TO FLX INVADERS";
-		var numPlayerBullets : UInt = 8;
+		var numPlayerBullets : Int = 8;
 		playerBullets = new FlxGroup(numPlayerBullets);
 		//Initializing the array is very important and easy to forget!
 		var sprite : FlxSprite;
@@ -54,7 +59,7 @@ class PlayState extends FlxState {
 		add(player);
 		//Adds the player to the state
 		//Then we kind of do the same thing for the enemy invaders; first we make their bullets.
-		var numAlienBullets : UInt = 32;
+		var numAlienBullets : Int = 32;
 		alienBullets = new FlxGroup(numAlienBullets);
 		i = 0;
 		while(i < numAlienBullets) {
@@ -67,13 +72,13 @@ class PlayState extends FlxState {
 		add(alienBullets);
 		//...then we go through and make the invaders.  This looks all mathy but it's not that bad!
 		//We're basically making 5 rows of 10 invaders, and each row is a different color.
-		var numAliens : UInt = 50;
+		var numAliens : Int = 50;
 		aliens = new FlxGroup(numAliens);
 		var a : Alien;
-		var colors : Array<Dynamic> = new Array<Dynamic>(FlxG.BLUE, (FlxG.BLUE | FlxG.GREEN), FlxG.GREEN, (FlxG.GREEN | FlxG.RED), FlxG.RED);
+		var colors : Array<Int> = [FlxG.BLUE, (FlxG.BLUE | FlxG.GREEN), FlxG.GREEN, (FlxG.GREEN | FlxG.RED), FlxG.RED];
 		i = 0;
 		while(i < numAliens) {
-			a = new Alien(8 + (i % 10) * 32, 24 + int(i / 10) * 32, colors[int(i / 10)], alienBullets);
+			a = new Alien(8 + (i % 10) * 32, 24 + cast(i / 10, Int) * 32, colors[cast(i / 10, Int)], alienBullets);
 			aliens.add(a);
 			i++;
 		}
@@ -86,7 +91,7 @@ class PlayState extends FlxState {
 		shields = new FlxGroup();
 		i = 0;
 		while(i < 64) {
-			sprite = new FlxSprite(32 + 80 * int(i / 16) + (i % 4) * 4, FlxG.height - 32 + (int((i % 16) / 4) * 4));
+			sprite = new FlxSprite(32 + 80 * cast(i / 16,Int) + (i % 4) * 4, FlxG.height - 32 + (cast((i % 16) / 4, Int) * 4));
 			//The Y position of this shield piece
 			sprite.active = false;
 			sprite.makeGraphic(4, 4);
