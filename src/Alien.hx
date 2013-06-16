@@ -1,23 +1,18 @@
 import org.flixel.FlxGroup;
 import org.flixel.FlxSprite;
 import org.flixel.FlxG;
+import openfl.Assets;
 
 
 class Alien extends FlxSprite {
 
 	var shotClock : Float;
-	//A simple timer for deciding when to shoot
 	var originalX : Int;
-	//Saves the starting horizontal position (for movement logic)
-	@:meta(Embed(source="alien.png"))
-	var ImgAlien : Class<Dynamic>;
-	//The graphic of the squid monster
-	//This is the constructor for the squid monster.
-	//We are going to set up the basic values and then create a simple animation.
 	public function new(X : Int, Y : Int, Color : UInt, Bullets : FlxGroup) {
 		super(X, Y);
 		//Initialize sprite object
-		loadGraphic(ImgAlien, true);
+		//The graphic of the squid monster
+		loadGraphic("assets/alien.png", true);
 		//Load this animated graphic file
 		color = Color;
 		//setting the color tints the plain white alien graphic
@@ -27,15 +22,16 @@ class Alien extends FlxSprite {
 		//We want to play them in the order 1, 2, 3, 1 (but of course this stuff is 0-index).
 		//To avoid a weird, annoying appearance the framerate is randomized a little bit
 		// to a value between 6 and 10 (6+4) frames per second.
-		addAnimation("Default", [0, 1, 0, 2], cast(6 + FlxG.random() * 4, Int), true);
+		addAnimation("Default", [0, 1, 2, 0], Std.int(6 + FlxG.random() * 4), true);
 		//Now that the animation is set up, it's very easy to play it back!
-		play("Default");
+		play("Default", true);
 		//Everybody move to the right!
 		velocity.x = 10;
 	}
 
 	//Basic game loop is BACK y'all
 	override public function update() : Void {
+		super.update();
 		//If alien has moved too far to the left, reverse direction and increase speed!
 		if(x < originalX - 8)  {
 			x = originalX - 8;
@@ -55,7 +51,7 @@ class Alien extends FlxSprite {
 			resetShotClock();
 			var playState:PlayState = cast(FlxG.state, PlayState);
 			if(playState != null){
-				var bullet : FlxSprite = cast(playState, FlxSprite);
+				var bullet : FlxSprite = cast(playState.alienBullets.recycle(), FlxSprite);
 				bullet.reset(x + width / 2 - bullet.width / 2, y);
 				bullet.velocity.y = 65;
 			}

@@ -2,15 +2,12 @@ import org.flixel.FlxSprite;
 import org.flixel.FlxG;
 
 class PlayerShip extends FlxSprite {
-
-	@:meta(Embed(source="ship.png"))
-	var ImgShip : Class<Dynamic>;
 	//Graphic of the player's ship
 	//Constructor for the player - just initializing a simple sprite using a graphic.
 	public function new() {
 		//This initializes this sprite object with the graphic of the ship and
 		// positions it in the middle of the screen.
-		super(FlxG.width / 2 - 6, FlxG.height - 12, ImgShip);
+		super(FlxG.width / 2 - 6, FlxG.height - 12, "assets/ship.png");
 	}
 
 	//Basic game loop function again!
@@ -28,11 +25,14 @@ class PlayerShip extends FlxSprite {
 		if(FlxG.keys.justPressed("SPACE"))  {
 			//Space bar was pressed!  FIRE A BULLET
 			var playState:PlayState = cast(FlxG.state, PlayState);
-			if(playState != null){
-				var bullet : FlxSprite = cast(playState, FlxSprite);
-				//try cast((try cast(FlxG.state, PlayState) catch(e) null).playerBullets.recycle(), FlxSprite) catch(e) null;
-				bullet.reset(x + width / 2 - bullet.width / 2, y);
-				bullet.velocity.y = -140;
+			if (playState != null) {
+				if(playState.playerBullets != null){
+					var bullet : FlxSprite = cast(playState.playerBullets.recycle(), FlxSprite);
+					if(bullet != null){
+						bullet.reset(x + width / 2 - bullet.width / 2, y);
+						bullet.velocity.y = -140;
+					}
+				}
 			}
 		}
 	}

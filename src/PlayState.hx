@@ -29,8 +29,8 @@ class PlayState extends FlxState {
 		var i : Int;
 		//We're using the global scores array to store a basic, state-independent status string.
 		//If there is no status string (the scores array is empty) then make a new welcome message.
-		if(FlxG.scores.length <= 0) FlxG.scores[0] = "WELCOME TO FLX INVADERS";
-		var numPlayerBullets : Int = 8;
+		//if(FlxG.scores.length <= 0) FlxG.scores[0] = "WELCOME TO FLX INVADERS";
+		var numPlayerBullets : Int = 20;
 		playerBullets = new FlxGroup(numPlayerBullets);
 		//Initializing the array is very important and easy to forget!
 		var sprite : FlxSprite;
@@ -38,9 +38,7 @@ class PlayState extends FlxState {
 		while(i < numPlayerBullets) {
 			//Create 8 bullets for the player to recycle
 			i++;
-		}
-		 {
-			sprite = new FlxSprite(-100, -100);
+		 	sprite = new FlxSprite(-100, -100);
 			//Instantiate a new sprite offscreen
 			sprite.makeGraphic(2, 8);
 			//Create a 2x8 white box
@@ -78,7 +76,7 @@ class PlayState extends FlxState {
 		var colors : Array<Int> = [FlxG.BLUE, (FlxG.BLUE | FlxG.GREEN), FlxG.GREEN, (FlxG.GREEN | FlxG.RED), FlxG.RED];
 		i = 0;
 		while(i < numAliens) {
-			a = new Alien(8 + (i % 10) * 32, 24 + cast(i / 10, Int) * 32, colors[cast(i / 10, Int)], alienBullets);
+			a = new Alien(8 + (i % 10) * 32, 24 + Std.int(i / 10) * 32, colors[Std.int(i / 10)], alienBullets);
 			aliens.add(a);
 			i++;
 		}
@@ -91,7 +89,7 @@ class PlayState extends FlxState {
 		shields = new FlxGroup();
 		i = 0;
 		while(i < 64) {
-			sprite = new FlxSprite(32 + 80 * cast(i / 16,Int) + (i % 4) * 4, FlxG.height - 32 + (cast((i % 16) / 4, Int) * 4));
+			sprite = new FlxSprite(32 + 80 * Std.int(i / 16) + (i % 4) * 4, FlxG.height - 32 + (Std.int((i % 16) / 4) * 4));
 			//The Y position of this shield piece
 			sprite.active = false;
 			sprite.makeGraphic(4, 4);
@@ -108,9 +106,9 @@ class PlayState extends FlxState {
 		vsAlienBullets.add(shields);
 		vsAlienBullets.add(player);
 		//Then we're going to add a text field to display the label we're storing in the scores array.
-		var t : FlxText = new FlxText(4, 4, FlxG.width - 8, FlxG.scores[0]);
-		t.alignment = "center";
-		add(t);
+		//var t : FlxText = new FlxText(4, 4, FlxG.width - 8, FlxG.scores[0]);
+		//t.alignment = "center";
+		//add(t);
 	}
 
 	//This is the main game loop function, where all the logic is done.
@@ -128,13 +126,13 @@ class PlayState extends FlxState {
 		// is a game over yet.  There are two ways to get a game over - player dies,
 		// OR player kills all aliens.  First we check to see if the player is dead:
 		if(!player.exists)  {
-			FlxG.scores[0] = "YOU LOST";
+			//FlxG.scores[0] = "YOU LOST";
 			//Player died, so set our label to YOU LOST
 			FlxG.resetState();
 		}
 
 		else if(aliens.getFirstExtant() == null)  {
-			FlxG.scores[0] = "YOU WON";
+			//FlxG.scores[0] = "YOU WON";
 			//No aliens left; you win!
 			FlxG.resetState();
 		}
